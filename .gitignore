@@ -1,0 +1,30 @@
+### IDEA
+# IntelliJ project files
+.idea
+*.iml
+*.log
+gen/
+out/
+pkg/
+test/
+build/
+target/
+
+### Go template
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.out
+*.a
+
+# Test binary, build with `go test -c`
+*.test
+
+#### pressure-test-go
+# setting file
+setting.json
+# executable file
+pressure*

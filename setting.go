@@ -23,4 +23,4 @@ const defaultJson = `{
 		"final_person": 50,
 		"duration": 5
     }
-}
+}`

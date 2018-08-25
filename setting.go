@@ -24,3 +24,12 @@ const defaultJson = `{
 		"duration": 5
     }
 }`
+
+type Task struct {
+	init_person  int
+	add_persion  int
+	final_person int
+	duration     int
+	urls         map[string]interface{}
+	headers      map[string]string
+}

@@ -32,14 +32,13 @@ const defaultJson = `{
 }`
 
 type TaskSetting struct {
-	init_person  int
-	add_persion  int
-	final_person int
-	duration     int
-	urls         map[string]interface{}
-	headers      map[string]string
+	Init_person  int                      `json:"init_person"`
+	Add_persion  int                      `json:"add_persion"`
+	Final_person int                      `json:"final_person"`
+	Duration     int                      `json:"duration"`
+	Urls         []map[string]interface{} `json:"urls"`
+	Headers      map[string]string        `json:"headers"`
 }
-
 
 // New creates a new Setting
 func NewTaskSetting(filename string) (map[string]TaskSetting, error) {

@@ -1,5 +1,11 @@
 package main
 
+import (
+	"io/ioutil"
+	"os"
+	"encoding/json"
+)
+
 const defaultJson = `{
 	"task0": {
 		"urls": [
@@ -25,11 +31,33 @@ const defaultJson = `{
     }
 }`
 
-type Task struct {
+type TaskSetting struct {
 	init_person  int
 	add_persion  int
 	final_person int
 	duration     int
 	urls         map[string]interface{}
 	headers      map[string]string
+}
+
+
+// New creates a new Setting
+func NewTaskSetting(filename string) (map[string]TaskSetting, error) {
+	var bytes []byte
+	var err error
+	if !FileExists(filename) {
+		bytes = []byte(defaultJson)
+		ioutil.WriteFile(filename, bytes, os.ModePerm)
+	} else {
+		bytes, err = ioutil.ReadFile(filename)
+		if err != nil {
+			return nil, err
+		}
+	}
+	data := make(map[string]TaskSetting)
+	err = json.Unmarshal(bytes, &data)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
 }

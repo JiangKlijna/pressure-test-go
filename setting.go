@@ -16,7 +16,8 @@ const defaultJson = `{
 		"init_person": 10,
 		"add_persion": 10,
 		"final_person": 50,
-		"duration": 5
+		"duration_time": 5,
+		"output_format": "csv"
 	},
     "task1": {
 		"urls": [
@@ -27,17 +28,19 @@ const defaultJson = `{
 		"init_person": 10,
 		"add_persion": 10,
 		"final_person": 50,
-		"duration": 5
+		"duration_time": 5,
+		"output_format": "html"
     }
 }`
 
 type TaskSetting struct {
-	Init_person  int                      `json:"init_person"`
-	Add_persion  int                      `json:"add_persion"`
-	Final_person int                      `json:"final_person"`
-	Duration     int                      `json:"duration"`
-	Urls         []map[string]interface{} `json:"urls"`
-	Headers      map[string]string        `json:"headers"`
+	Init_person   int                      `json:"init_person"`
+	Add_persion   int                      `json:"add_persion"`
+	Final_person  int                      `json:"final_person"`
+	Duration_time int                      `json:"duration_time"`
+	Output_format string                   `json:"output_format"`
+	Urls          []map[string]interface{} `json:"urls"`
+	Headers       map[string]string        `json:"headers"`
 }
 
 // New creates a new Setting

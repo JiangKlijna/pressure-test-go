@@ -1,8 +1,8 @@
 package main
 
 import (
-	"io/ioutil"
 	"os"
+	"io/ioutil"
 	"encoding/json"
 )
 
@@ -14,7 +14,7 @@ const defaultJson = `{
 		],
 		"headers": {"user-agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"},
 		"init_person": 10,
-		"add_persion": 10,
+		"add_person": 10,
 		"final_person": 50,
 		"duration_time": 5,
 		"output_format": "csv"
@@ -26,7 +26,7 @@ const defaultJson = `{
 		],
 		"headers": {"user-agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko"},
 		"init_person": 10,
-		"add_persion": 10,
+		"add_person": 10,
 		"final_person": 50,
 		"duration_time": 5,
 		"output_format": "html"
@@ -35,7 +35,7 @@ const defaultJson = `{
 
 type TaskSetting struct {
 	Init_person   int                      `json:"init_person"`
-	Add_persion   int                      `json:"add_persion"`
+	Add_person    int                      `json:"add_person"`
 	Final_person  int                      `json:"final_person"`
 	Duration_time int                      `json:"duration_time"`
 	Output_format string                   `json:"output_format"`

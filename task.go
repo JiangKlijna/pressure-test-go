@@ -1,21 +1,26 @@
 package main
 
 type TaskServer struct {
-	isRun   bool
+	person  []TaskPerson
 	setting *TaskSetting
 }
 
 func NewTaskServer(setting *TaskSetting) *TaskServer {
-	return &TaskServer{true, setting}
+	return &TaskServer{make([]TaskPerson, setting.Final_person), setting}
+}
+
+type TaskPerson struct {
+	isRun bool
+	urls  []map[string]interface{}
 }
 
 // single request
-func (t *TaskServer) run() {
+func (t *TaskPerson) run() {
 
 }
 
 // start server
-func (t *TaskServer) start() {
+func (t *TaskPerson) start() {
 	go func() {
 		for t.isRun {
 			t.run()
@@ -24,6 +29,6 @@ func (t *TaskServer) start() {
 }
 
 // stop server
-func (t *TaskServer) stop() {
+func (t *TaskPerson) stop() {
 	t.isRun = false
 }

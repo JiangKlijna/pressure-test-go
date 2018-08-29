@@ -10,7 +10,11 @@ type TaskServer struct {
 
 // start server
 func (t *TaskServer) start() {
-
+	for i := t.setting.Init_person; i <= t.setting.Final_person; i += t.setting.Add_person {
+		for j := i; j <= t.setting.Add_person; j++ {
+			t.person[j].start()
+		}
+	}
 }
 
 // stop server

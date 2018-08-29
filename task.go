@@ -1,6 +1,9 @@
 package main
 
+import "sync"
+
 type TaskServer struct {
+	mutex   sync.Mutex
 	person  []TaskPerson
 	setting *TaskSetting
 }
@@ -24,6 +27,8 @@ func (t *TaskServer) real_statistics() {
 
 // notify statistics
 func (t *TaskServer) notify_statistics() {
+	t.mutex.Lock()
+	defer t.mutex.Unlock()
 	for _, p := range t.person {
 		if !p.isStop {
 			return
@@ -33,13 +38,14 @@ func (t *TaskServer) notify_statistics() {
 }
 
 func NewTaskServer(setting *TaskSetting) *TaskServer {
-	return &TaskServer{make([]TaskPerson, setting.Final_person), setting}
+	return &TaskServer{sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
 }
 
 type TaskPerson struct {
 	isRun  bool
 	isStop bool
 	task   *TaskServer
+	result *PressureTestResult
 }
 
 // single request
@@ -55,6 +61,7 @@ func (t *TaskPerson) start() {
 			t.run()
 		}
 		t.isStop = true
+		t.task.notify_statistics()
 	}()
 }
 

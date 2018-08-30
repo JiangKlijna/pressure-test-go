@@ -4,6 +4,7 @@ import (
 	"os"
 	"io/ioutil"
 	"encoding/json"
+	"math/rand"
 )
 
 const defaultJson = `{
@@ -62,4 +63,8 @@ func NewTaskSetting(filename string) (map[string]TaskSetting, error) {
 		return nil, err
 	}
 	return data, nil
+}
+
+func (t TaskSetting) random_url() map[string]interface{} {
+	return t.Urls[rand.Int()*len(t.Urls)]
 }

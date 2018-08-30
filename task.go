@@ -1,6 +1,9 @@
 package main
 
-import "sync"
+import (
+	"sync"
+	"time"
+)
 
 type TaskServer struct {
 	mutex   sync.Mutex
@@ -14,7 +17,9 @@ func (t *TaskServer) start() {
 		for j := i; j <= t.setting.Add_person; j++ {
 			t.person[j].start()
 		}
+		time.Sleep(time.Duration(t.setting.Duration_time * 1000))
 	}
+	t.stop()
 }
 
 // stop server

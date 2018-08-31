@@ -16,3 +16,10 @@ func (r PressureTestResult) success_rate() float32 {
 func (r PressureTestResult) average_time() float32 {
 	return float32(r.request_number) / r.duration_time
 }
+
+// add data
+func (r PressureTestResult) add(other *PressureTestResult) {
+	r.request_number += other.request_number
+	r.failure_number += other.failure_number
+	r.duration_time += other.duration_time
+}

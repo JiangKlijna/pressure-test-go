@@ -31,7 +31,10 @@ func (t *TaskServer) stop() {
 
 // real statistics
 func (t *TaskServer) real_statistics() {
-
+	result := &PressureTestResult{}
+	for _, p := range t.person {
+		result.add(p.result);
+	}
 }
 
 // notify statistics

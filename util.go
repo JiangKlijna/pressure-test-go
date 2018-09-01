@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+	"os"
+	"bytes"
+)
 
 // File if exist
 func FileExists(path string) bool {
@@ -16,4 +19,17 @@ func DirExists(path string) bool {
 		return stat.IsDir()
 	}
 	return false
+}
+
+// params to string
+func params_string(params map[string]string) string {
+	buf := &bytes.Buffer{}
+	for k, v := range params {
+		buf.WriteString(k)
+		buf.WriteByte('=')
+		buf.WriteString(v)
+		buf.WriteByte('&')
+	}
+	buf.Truncate(buf.Len() - 1)
+	return buf.String()
 }

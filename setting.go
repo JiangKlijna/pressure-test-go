@@ -67,6 +67,27 @@ func NewTaskSetting(filename string) (map[string]TaskSetting, error) {
 	return data, nil
 }
 
-func (t TaskSetting) random_url() map[string]interface{} {
+// get random url
+func (t TaskSetting) random_url() Url {
 	return t.Urls[rand.Int()*len(t.Urls)]
+}
+
+// get method
+func (u Url) method() string {
+	return u["method"].(string)
+}
+
+// get url path
+func (u Url) url() string {
+	return u["url"].(string)
+}
+
+// get params
+func (u Url) params() map[string]string {
+	return u["params"].(map[string]string)
+}
+
+// get data
+func (u Url) data() map[string]string {
+	return u["data"].(map[string]string)
 }

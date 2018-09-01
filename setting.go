@@ -34,14 +34,16 @@ const defaultJson = `{
     }
 }`
 
+type Url map[string]interface{}
+
 type TaskSetting struct {
-	Init_person   int                      `json:"init_person"`
-	Add_person    int                      `json:"add_person"`
-	Final_person  int                      `json:"final_person"`
-	Duration_time int                      `json:"duration_time"`
-	Output_format string                   `json:"output_format"`
-	Urls          []map[string]interface{} `json:"urls"`
-	Headers       map[string]string        `json:"headers"`
+	Init_person   int               `json:"init_person"`
+	Add_person    int               `json:"add_person"`
+	Final_person  int               `json:"final_person"`
+	Duration_time int               `json:"duration_time"`
+	Output_format string            `json:"output_format"`
+	Urls          []Url             `json:"urls"`
+	Headers       map[string]string `json:"headers"`
 }
 
 // New creates a new Setting

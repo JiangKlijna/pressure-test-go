@@ -74,7 +74,12 @@ func (t TaskSetting) random_url() Url {
 
 // get method
 func (u Url) method() string {
-	return u["method"].(string)
+	if method, is := u["method"]; is {
+		if method, is := method.(string); is {
+			return method
+		}
+	}
+	return ""
 }
 
 // get url path

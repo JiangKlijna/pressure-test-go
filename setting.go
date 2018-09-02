@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"math/rand"
+	"strings"
 )
 
 const defaultJson = `{
@@ -79,12 +80,26 @@ func (u Url) method() string {
 			return method
 		}
 	}
-	return ""
+	return "GET"
 }
 
 // get url path
 func (u Url) url() string {
-	return u["url"].(string)
+	if path, is := u["path"]; is {
+		return path.(string)
+	}
+	if params, is := u["params"]; is {
+		url := u["url"].(string)
+		s := params_string(params.(map[string]string))
+		if strings.LastIndex(url, "?") > 0 {
+			u["path"] = url + "&" + s
+		} else {
+			u["path"] = url + "?" + s
+		}
+	} else {
+		u["path"] = u["url"]
+	}
+	return u.url()
 }
 
 // get params

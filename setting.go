@@ -102,12 +102,15 @@ func (u Url) url() string {
 	return u.url()
 }
 
-// get params
-func (u Url) params() map[string]string {
-	return u["params"].(map[string]string)
-}
-
 // get data
-func (u Url) data() map[string]string {
-	return u["data"].(map[string]string)
+func (u Url) data() *strings.Reader {
+	if dat, is := u["dat"]; is {
+		return strings.NewReader(dat.(string))
+	}
+	if data, is := u["data"]; is {
+		u["dat"] = params_string(data.(map[string]string))
+		return u.data()
+	} else {
+		return nil
+	}
 }

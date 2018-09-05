@@ -70,7 +70,7 @@ func NewTaskSetting(filename string) (map[string]TaskSetting, error) {
 
 // get random url
 func (t TaskSetting) random_url() Url {
-	return t.Urls[rand.Int()*len(t.Urls)]
+	return t.Urls[rand.Intn(len(t.Urls))]
 }
 
 // get method

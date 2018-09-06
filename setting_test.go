@@ -9,4 +9,9 @@ func TestNewSetting(t *testing.T) {
 		return
 	}
 	t.Log(setting)
+	for _, s := range setting {
+		for _, url := range s.Urls {
+			t.Log(url)
+		}
+	}
 }

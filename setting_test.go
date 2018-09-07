@@ -14,4 +14,24 @@ func TestNewSetting(t *testing.T) {
 			t.Log(url)
 		}
 	}
+
+	u := Url(map[string]interface{}{
+		//"method": "GET",
+		"url":    "http://baidu.com/s",
+		"params": map[string]string{
+			"wd": "abc",
+		},
+		"data": map[string]string{
+			"wd": "abc",
+		},
+	})
+
+	if u.url() != u["path"] {
+		t.Error(u.url())
+		return
+	}
+	t.Log(u.method())
+	t.Log(u.url())
+	t.Log(u.data())
 }
+

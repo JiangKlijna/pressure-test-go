@@ -3,6 +3,7 @@ package main
 import (
 	"sync"
 	"time"
+	"net/http"
 )
 
 type TaskServer struct {
@@ -57,17 +58,30 @@ type TaskPerson struct {
 	isRun  bool
 	isStop bool
 	task   *TaskServer
+	client *http.Client
 	result *PressureTestResult
 }
 
 // single request
 func (t *TaskPerson) run() {
-
+	url := t.task.setting.random_url()
+	req, err := http.NewRequest(url.method(), url.url(), url.data())
+	if err != nil {
+		t.stop()
+		return
+	}
+	res, err := t.client.Do(req)
+	if err != nil {
+		t.stop()
+		return
+	}
+	println(res)
 }
 
 // start multi-request
 func (t *TaskPerson) start() {
 	go func() {
+		t.client = &http.Client{}
 		t.isRun = true
 		for t.isRun {
 			t.run()

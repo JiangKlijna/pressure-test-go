@@ -70,6 +70,9 @@ func (t *TaskPerson) run() {
 		t.stop()
 		return
 	}
+	for k, v := range t.task.setting.Headers {
+		req.Header.Add(k, v)
+	}
 	res, err := t.client.Do(req)
 	if err != nil {
 		t.stop()

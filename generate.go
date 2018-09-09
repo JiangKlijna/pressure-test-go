@@ -1,10 +1,12 @@
 package main
 
+import "time"
+
 type PressureTestResult struct {
 	id             int
 	request_number int
 	failure_number int
-	duration_time  float32
+	duration_time  time.Duration
 }
 
 // get Success rate
@@ -13,8 +15,8 @@ func (r PressureTestResult) success_rate() float32 {
 }
 
 // get Average time consuming
-func (r PressureTestResult) average_time() float32 {
-	return float32(r.request_number) / r.duration_time
+func (r PressureTestResult) average_time() time.Duration {
+	return r.duration_time / time.Duration(r.request_number)
 }
 
 // add data

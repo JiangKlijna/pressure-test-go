@@ -73,12 +73,14 @@ func (t *TaskPerson) run() {
 	for k, v := range t.task.setting.Headers {
 		req.Header.Add(k, v)
 	}
+	start := time.Now()
 	res, err := t.client.Do(req)
+	end := time.Since(start)
 	if err != nil {
 		t.stop()
 		return
 	}
-	println(res)
+	println(res, end)
 }
 
 // start multi-request
@@ -97,4 +99,13 @@ func (t *TaskPerson) start() {
 // stop multi-request
 func (t *TaskPerson) stop() {
 	t.isRun = false
+}
+
+// mark PressureTestResult
+func (t *TaskPerson) mark(isFailure bool, duration time.Duration) {
+	t.result.request_number++
+	if isFailure {
+		t.result.failure_number++
+	}
+	t.result.duration_time += duration
 }

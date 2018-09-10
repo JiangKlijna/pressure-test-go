@@ -64,23 +64,28 @@ type TaskPerson struct {
 
 // single request
 func (t *TaskPerson) run() {
+	start := time.Now()
 	url := t.task.setting.random_url()
 	req, err := http.NewRequest(url.method(), url.url(), url.data())
 	if err != nil {
 		t.stop()
+		t.mark(false, start)
 		return
 	}
 	for k, v := range t.task.setting.Headers {
 		req.Header.Add(k, v)
 	}
-	start := time.Now()
 	res, err := t.client.Do(req)
-	end := time.Since(start)
 	if err != nil {
 		t.stop()
+		t.mark(false, start)
 		return
 	}
-	println(res, end)
+	if res.StatusCode >= 200 || res.StatusCode < 300 {
+		t.mark(true, start)
+	} else {
+		t.mark(false, start)
+	}
 }
 
 // start multi-request

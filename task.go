@@ -102,10 +102,10 @@ func (t *TaskPerson) stop() {
 }
 
 // mark PressureTestResult
-func (t *TaskPerson) mark(isFailure bool, duration time.Duration) {
+func (t *TaskPerson) mark(isFailure bool, start time.Time) {
 	t.result.request_number++
 	if isFailure {
 		t.result.failure_number++
 	}
-	t.result.duration_time += duration
+	t.result.duration_time += time.Since(start)
 }

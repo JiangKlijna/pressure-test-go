@@ -6,14 +6,14 @@ import (
 	"net/http"
 )
 
-type TaskServer struct {
+type TaskService struct {
 	mutex   sync.Mutex
 	person  []TaskPerson
 	setting *TaskSetting
 }
 
 // start server
-func (t *TaskServer) start() {
+func (t *TaskService) start() {
 	for i := t.setting.Init_person; i <= t.setting.Final_person; i += t.setting.Add_person {
 		for j := i; j <= t.setting.Add_person; j++ {
 			t.person[j].start()
@@ -24,14 +24,14 @@ func (t *TaskServer) start() {
 }
 
 // stop server
-func (t *TaskServer) stop() {
+func (t *TaskService) stop() {
 	for _, p := range t.person {
 		p.stop()
 	}
 }
 
 // real statistics
-func (t *TaskServer) real_statistics() {
+func (t *TaskService) real_statistics() {
 	result := &PressureTestResult{}
 	for _, p := range t.person {
 		result.add(p.result);
@@ -39,7 +39,7 @@ func (t *TaskServer) real_statistics() {
 }
 
 // notify statistics
-func (t *TaskServer) notify_statistics() {
+func (t *TaskService) notify_statistics() {
 	t.mutex.Lock()
 	defer t.mutex.Unlock()
 	for _, p := range t.person {
@@ -50,14 +50,14 @@ func (t *TaskServer) notify_statistics() {
 	t.real_statistics()
 }
 
-func NewTaskServer(setting *TaskSetting) *TaskServer {
-	return &TaskServer{sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
+func NewTaskServer(setting *TaskSetting) *TaskService {
+	return &TaskService{sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
 }
 
 type TaskPerson struct {
 	isRun  bool
 	isStop bool
-	task   *TaskServer
+	task   *TaskService
 	client *http.Client
 	result *PressureTestResult
 }

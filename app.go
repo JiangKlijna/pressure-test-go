@@ -5,10 +5,16 @@ import(
 )
 
 type Application struct {
+	settings *map[string]TaskSetting
 }
 
 // Init log & set
 func (app *Application) Init() error {
+	ss, err := NewTaskSetting("setting.json")
+	if err != nil {
+		return err;
+	}
+	app.settings = &ss
 	return nil
 }
 
@@ -22,6 +28,7 @@ func (app *Application) check(err error) {
 
 // Start all of server
 func (app *Application) Start() {
+
 }
 
 // Stop all of server

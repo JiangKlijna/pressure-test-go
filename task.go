@@ -50,7 +50,7 @@ func (t *TaskService) notify_statistics() {
 	t.real_statistics()
 }
 
-func NewTaskServer(setting *TaskSetting) *TaskService {
+func NewTaskService(setting *TaskSetting) *TaskService {
 	return &TaskService{sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
 }
 

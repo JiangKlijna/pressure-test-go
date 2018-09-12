@@ -5,7 +5,8 @@ import(
 )
 
 type Application struct {
-	settings *map[string]TaskSetting
+	services map[string]TaskService
+	settings map[string]TaskSetting
 }
 
 // Init log & set
@@ -14,7 +15,11 @@ func (app *Application) Init() error {
 	if err != nil {
 		return err;
 	}
-	app.settings = &ss
+	app.settings = ss
+	app.services = make(map[string]TaskService)
+	for k, s := range ss  {
+		app.services[k] = *NewTaskService(&s)
+	}
 	return nil
 }
 
@@ -28,7 +33,6 @@ func (app *Application) check(err error) {
 
 // Start all of server
 func (app *Application) Start() {
-
 }
 
 // Stop all of server

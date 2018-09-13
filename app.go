@@ -2,6 +2,7 @@ package main
 
 import(
 	"os"
+	"os/signal"
 )
 
 type Application struct {
@@ -33,6 +34,12 @@ func (app *Application) check(err error) {
 
 // Start all of server
 func (app *Application) Start() {
+	for _, s := range app.services  {
+		s.start()
+	}
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, os.Kill)
+	<-c
 }
 
 // Stop all of server

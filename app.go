@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"os"
 	"os/signal"
 )
@@ -18,8 +18,8 @@ func (app *Application) Init() error {
 	}
 	app.settings = ss
 	app.services = make(map[string]TaskService)
-	for k, s := range ss  {
-		app.services[k] = *NewTaskService(&s)
+	for k, s := range ss {
+		app.services[k] = *NewTaskService(k, &s)
 	}
 	return nil
 }
@@ -34,7 +34,7 @@ func (app *Application) check(err error) {
 
 // Start all of server
 func (app *Application) Start() {
-	for _, s := range app.services  {
+	for _, s := range app.services {
 		s.start()
 	}
 	c := make(chan os.Signal, 1)

@@ -4,7 +4,7 @@ import (
 	"sync"
 	"time"
 	"net/http"
-)
+	)
 
 type TaskService struct {
 	mutex   sync.Mutex
@@ -16,7 +16,7 @@ type TaskService struct {
 func (t *TaskService) start() {
 	for i := t.setting.Init_person; i <= t.setting.Final_person; i += t.setting.Add_person {
 		for j := i; j <= t.setting.Add_person; j++ {
-			t.person[j].start()
+			t.person[j].start(t)
 		}
 		time.Sleep(time.Duration(t.setting.Duration_time * 1000))
 	}
@@ -89,8 +89,9 @@ func (t *TaskPerson) run() {
 }
 
 // start multi-request
-func (t *TaskPerson) start() {
+func (t *TaskPerson) start(service *TaskService) {
 	go func() {
+		t.task = service
 		t.client = &http.Client{}
 		t.isRun = true
 		for t.isRun {

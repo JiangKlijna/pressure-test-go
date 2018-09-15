@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"bytes"
+	"fmt"
 )
 
 // File if exist
@@ -22,12 +23,17 @@ func DirExists(path string) bool {
 }
 
 // params to string
-func params_string(params map[string]string) string {
+func params_string(params map[string]interface{}) string {
 	buf := &bytes.Buffer{}
 	for k, v := range params {
 		buf.WriteString(k)
 		buf.WriteByte('=')
-		buf.WriteString(v)
+		switch v.(type) {
+		case string:
+			buf.WriteString(v.(string))
+		default:
+			buf.WriteString(fmt.Sprint(v))
+		}
 		buf.WriteByte('&')
 	}
 	buf.Truncate(buf.Len() - 1)

@@ -24,6 +24,9 @@ func DirExists(path string) bool {
 
 // params to string
 func params_string(params map[string]interface{}) string {
+	if len(params) == 0 {
+		return ""
+	}
 	buf := &bytes.Buffer{}
 	for k, v := range params {
 		buf.WriteString(k)

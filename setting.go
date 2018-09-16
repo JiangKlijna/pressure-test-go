@@ -105,6 +105,9 @@ func (u Url) url() string {
 // get data
 func (u Url) data() *strings.Reader {
 	if dat, is := u["dat"]; is {
+		if dat == "" {
+			return nil
+		}
 		return strings.NewReader(dat.(string))
 	}
 	if data, is := u["data"]; is {

@@ -90,7 +90,7 @@ func (u Url) url() string {
 	}
 	if params, is := u["params"]; is {
 		url := u["url"].(string)
-		s := params_string(params.(map[string]string))
+		s := params_string(params.(map[string]interface{}))
 		if strings.LastIndex(url, "?") > 0 {
 			u["path"] = url + "&" + s
 		} else {
@@ -108,7 +108,7 @@ func (u Url) data() *strings.Reader {
 		return strings.NewReader(dat.(string))
 	}
 	if data, is := u["data"]; is {
-		u["dat"] = params_string(data.(map[string]string))
+		u["dat"] = params_string(data.(map[string]interface{}))
 		return u.data()
 	} else {
 		return nil

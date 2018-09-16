@@ -91,7 +91,9 @@ func (u Url) url() string {
 	if params, is := u["params"]; is {
 		url := u["url"].(string)
 		s := params_string(params.(map[string]interface{}))
-		if strings.LastIndex(url, "?") > 0 {
+		if s == "" {
+			u["path"] = url
+		} else if strings.LastIndex(url, "?") > 0 {
 			u["path"] = url + "&" + s
 		} else {
 			u["path"] = url + "?" + s

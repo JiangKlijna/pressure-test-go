@@ -35,6 +35,8 @@ const defaultJson = `{
     }
 }`
 
+var empty_body = strings.NewReader("")
+
 type Url map[string]interface{}
 
 type TaskSetting struct {
@@ -108,14 +110,15 @@ func (u Url) url() string {
 func (u Url) data() *strings.Reader {
 	if dat, is := u["dat"]; is {
 		if dat == "" {
-			return nil
+			return empty_body
+		} else {
+			return strings.NewReader(dat.(string))
 		}
-		return strings.NewReader(dat.(string))
 	}
 	if data, is := u["data"]; is {
 		u["dat"] = params_string(data.(map[string]interface{}))
 		return u.data()
 	} else {
-		return nil
+		return empty_body
 	}
 }

@@ -4,9 +4,11 @@ import (
 	"sync"
 	"time"
 	"net/http"
-	)
+	"fmt"
+)
 
 type TaskService struct {
+	tag     string
 	mutex   sync.Mutex
 	person  []TaskPerson
 	setting *TaskSetting
@@ -16,6 +18,7 @@ type TaskService struct {
 func (t *TaskService) start() {
 	for i := t.setting.Init_person; i <= t.setting.Final_person; i += t.setting.Add_person {
 		for j := i; j <= t.setting.Add_person; j++ {
+			fmt.Printf("start TaskService[%s][%d]\n", t.tag, j)
 			t.person[j].start(t)
 		}
 		time.Sleep(time.Duration(t.setting.Duration_time * 1000))
@@ -50,8 +53,8 @@ func (t *TaskService) notify_statistics() {
 	t.real_statistics()
 }
 
-func NewTaskService(setting *TaskSetting) *TaskService {
-	return &TaskService{sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
+func NewTaskService(tag string, setting *TaskSetting) *TaskService {
+	return &TaskService{tag, sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
 }
 
 type TaskPerson struct {
@@ -88,11 +91,12 @@ func (t *TaskPerson) run() {
 	}
 }
 
-// start multi-request
+// start multi-request and init
 func (t *TaskPerson) start(service *TaskService) {
 	go func() {
 		t.task = service
 		t.client = &http.Client{}
+		t.result = &PressureTestResult{}
 		t.isRun = true
 		for t.isRun {
 			t.run()

@@ -18,7 +18,6 @@ type TaskService struct {
 func (t *TaskService) start() {
 	for i := t.setting.Init_person; i <= t.setting.Final_person; i += t.setting.Add_person {
 		for j := i; j <= t.setting.Add_person; j++ {
-			log.Printf("TaskService[%s][%d]->start\n", t.tag, j)
 			t.person[j].start(j, t)
 		}
 		time.Sleep(time.Duration(t.setting.Duration_time) * time.Second)
@@ -101,9 +100,11 @@ func (t *TaskPerson) start(index int, service *TaskService) {
 		t.client = &http.Client{}
 		t.result = &PressureTestResult{}
 		t.isRun = true
+		log.Printf("TaskService[%s][%d]->start\n", service.tag, index)
 		for t.isRun {
 			t.run()
 		}
+		log.Printf("TaskService[%s][%d]->stop\n", service.tag, index)
 		t.isStop = true
 		t.task.notify_statistics()
 	}()
@@ -112,7 +113,6 @@ func (t *TaskPerson) start(index int, service *TaskService) {
 // stop multi-request
 func (t *TaskPerson) stop() {
 	t.isRun = false
-	log.Printf("TaskService[%s][%d]->stop\n", t.task.tag, t.index)
 }
 
 // mark PressureTestResult

@@ -21,7 +21,7 @@ func (t *TaskService) start() {
 			log.Printf("TaskService[%s][%d]->start\n", t.tag, j)
 			t.person[j].start(j, t)
 		}
-		time.Sleep(time.Duration(t.setting.Duration_time * 1000))
+		time.Sleep(time.Duration(t.setting.Duration_time) * time.Second)
 	}
 	t.stop()
 }

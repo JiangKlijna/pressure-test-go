@@ -1,10 +1,10 @@
 package main
 
 import (
+	"log"
 	"sync"
 	"time"
 	"net/http"
-	"log"
 )
 
 type TaskService struct {
@@ -16,11 +16,19 @@ type TaskService struct {
 
 // start server
 func (t *TaskService) start() {
-	for i := t.setting.Init_person; i <= t.setting.Final_person; i += t.setting.Add_person {
-		for j := i; j <= t.setting.Add_person; j++ {
-			t.person[j].start(j, t)
+	i := 0
+	setting := t.setting
+	// init start server
+	for ; i < setting.Init_person; i++ {
+		t.person[i].start(i, t)
+	}
+	for i < setting.Final_person {
+		time.Sleep(time.Duration(setting.Duration_time) * time.Second)
+		for j := 0; j < setting.Add_person; j++ {
+			log.Println(i)
+			t.person[i].start(i, t)
+			i++
 		}
-		time.Sleep(time.Duration(t.setting.Duration_time) * time.Second)
 	}
 	t.stop()
 }

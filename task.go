@@ -81,7 +81,7 @@ func (t *TaskPerson) run() {
 	log.Printf("TaskService[%s][%d]->%s->%s\n", t.task.tag, t.index, url.method(), url.url())
 	if err != nil {
 		t.stop()
-		t.mark(false, start)
+		t.result.mark(false, start)
 		return
 	}
 	for k, v := range t.task.setting.Headers {
@@ -90,13 +90,13 @@ func (t *TaskPerson) run() {
 	res, err := t.client.Do(req)
 	if err != nil {
 		t.stop()
-		t.mark(false, start)
+		t.result.mark(false, start)
 		return
 	}
 	if res.StatusCode >= 200 || res.StatusCode < 300 {
-		t.mark(true, start)
+		t.result.mark(true, start)
 	} else {
-		t.mark(false, start)
+		t.result.mark(false, start)
 	}
 }
 
@@ -121,13 +121,4 @@ func (t *TaskPerson) start(index int, service *TaskService) {
 // stop multi-request
 func (t *TaskPerson) stop() {
 	t.isRun = false
-}
-
-// mark PressureTestResult
-func (t *TaskPerson) mark(isFailure bool, start time.Time) {
-	t.result.request_number++
-	if isFailure {
-		t.result.failure_number++
-	}
-	t.result.duration_time += time.Since(start)
 }

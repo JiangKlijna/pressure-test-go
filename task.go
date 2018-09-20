@@ -60,6 +60,22 @@ func (t *TaskService) notify_statistics() {
 	t.real_statistics()
 }
 
+// single request
+func (t *TaskService) request(url *Url, client *http.Client) bool {
+	req, err := http.NewRequest(url.method(), url.url(), url.data())
+	if err != nil {
+		return false
+	}
+	for k, v := range t.setting.Headers {
+		req.Header.Add(k, v)
+	}
+	res, err := client.Do(req)
+	if err != nil {
+		return false
+	}
+	return res.StatusCode >= 200 || res.StatusCode < 300
+}
+
 func NewTaskService(tag string, setting *TaskSetting) *TaskService {
 	return &TaskService{tag, sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
 }
@@ -73,33 +89,6 @@ type TaskPerson struct {
 	result *PressureTestResult
 }
 
-// single request
-func (t *TaskPerson) run() {
-	start := time.Now()
-	url := t.task.setting.random_url()
-	req, err := http.NewRequest(url.method(), url.url(), url.data())
-	log.Printf("TaskService[%s][%d]->%s->%s\n", t.task.tag, t.index, url.method(), url.url())
-	if err != nil {
-		t.stop()
-		t.result.mark(false, start)
-		return
-	}
-	for k, v := range t.task.setting.Headers {
-		req.Header.Add(k, v)
-	}
-	res, err := t.client.Do(req)
-	if err != nil {
-		t.stop()
-		t.result.mark(false, start)
-		return
-	}
-	if res.StatusCode >= 200 || res.StatusCode < 300 {
-		t.result.mark(true, start)
-	} else {
-		t.result.mark(false, start)
-	}
-}
-
 // start multi-request and init
 func (t *TaskPerson) start(index int, service *TaskService) {
 	go func() {
@@ -110,7 +99,9 @@ func (t *TaskPerson) start(index int, service *TaskService) {
 		t.isRun = true
 		log.Printf("TaskService[%s][%d]->start\n", service.tag, index)
 		for t.isRun {
-			t.run()
+			url := service.setting.random_url()
+			service.request(&url, t.client)
+			log.Printf("TaskService[%s][%d]->%s->%s\n", service.tag, t.index, url.method(), url.url())
 		}
 		log.Printf("TaskService[%s][%d]->stop\n", service.tag, index)
 		t.isStop = true

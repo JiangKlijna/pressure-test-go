@@ -80,6 +80,14 @@ func NewTaskService(tag string, setting *TaskSetting) *TaskService {
 	return &TaskService{tag, sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
 }
 
+type SubTask struct {
+	start  func()
+	stop   func()
+	isRun  func() bool
+	isStop func() bool
+	result func() *PressureTestResult
+}
+
 type TaskPerson struct {
 	index  int
 	isRun  bool

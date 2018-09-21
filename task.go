@@ -88,6 +88,20 @@ type SubTask struct {
 	result func() *PressureTestResult
 }
 
+func NewSubTask(index int, service *TaskService) *SubTask {
+	isRun, isStop := false, false
+	result := &PressureTestResult{}
+	return &SubTask{
+		start: func() {
+		},
+		stop: func() {
+		},
+		isRun:  func() bool { return isRun },
+		isStop: func() bool { return isStop },
+		result: func() *PressureTestResult { return result },
+	}
+}
+
 type TaskPerson struct {
 	index  int
 	isRun  bool

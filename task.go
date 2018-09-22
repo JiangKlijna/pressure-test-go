@@ -10,7 +10,7 @@ import (
 type TaskService struct {
 	tag     string
 	mutex   sync.Mutex
-	person  []TaskPerson
+	person  []SubTask
 	setting *TaskSetting
 }
 
@@ -20,13 +20,13 @@ func (t *TaskService) start() {
 	setting := t.setting
 	// init start server
 	for ; i < setting.Init_person; i++ {
-		t.person[i].start(i, t)
+		go t.person[i].start()
 	}
 	for i < setting.Final_person {
 		time.Sleep(time.Duration(setting.Duration_time) * time.Second)
 		for j := 0; j < setting.Add_person; j++ {
 			log.Println(i)
-			t.person[i].start(i, t)
+			go t.person[i].start()
 			i++
 		}
 	}
@@ -44,7 +44,7 @@ func (t *TaskService) stop() {
 func (t *TaskService) real_statistics() {
 	result := &PressureTestResult{}
 	for _, p := range t.person {
-		result.add(p.result);
+		result.add(p.result());
 	}
 }
 
@@ -53,7 +53,7 @@ func (t *TaskService) notify_statistics() {
 	t.mutex.Lock()
 	defer t.mutex.Unlock()
 	for _, p := range t.person {
-		if !p.isStop {
+		if !p.isStop() {
 			return
 		}
 	}
@@ -77,7 +77,7 @@ func (t *TaskService) request(url *Url, client *http.Client) bool {
 }
 
 func NewTaskService(tag string, setting *TaskSetting) *TaskService {
-	return &TaskService{tag, sync.Mutex{}, make([]TaskPerson, setting.Final_person), setting}
+	return &TaskService{tag, sync.Mutex{}, make([]SubTask, setting.Final_person), setting}
 }
 
 type SubTask struct {
@@ -111,38 +111,4 @@ func NewSubTask(index int, task *TaskService) *SubTask {
 		isStop: func() bool { return isStop },
 		result: func() *PressureTestResult { return result },
 	}
-}
-
-type TaskPerson struct {
-	index  int
-	isRun  bool
-	isStop bool
-	task   *TaskService
-	client *http.Client
-	result *PressureTestResult
-}
-
-// start multi-request and init
-func (t *TaskPerson) start(index int, service *TaskService) {
-	go func() {
-		t.index = index
-		t.task = service
-		t.client = &http.Client{}
-		t.result = &PressureTestResult{}
-		t.isRun = true
-		log.Printf("TaskService[%s][%d]->start\n", service.tag, index)
-		for t.isRun {
-			url := service.setting.random_url()
-			service.request(&url, t.client)
-			log.Printf("TaskService[%s][%d]->%s->%s\n", service.tag, t.index, url.method(), url.url())
-		}
-		log.Printf("TaskService[%s][%d]->stop\n", service.tag, index)
-		t.isStop = true
-		t.task.notify_statistics()
-	}()
-}
-
-// stop multi-request
-func (t *TaskPerson) stop() {
-	t.isRun = false
 }

@@ -88,11 +88,23 @@ type SubTask struct {
 	result func() *PressureTestResult
 }
 
-func NewSubTask(index int, service *TaskService) *SubTask {
+func NewSubTask(index int, task *TaskService) *SubTask {
 	isRun, isStop := false, false
+	client := &http.Client{}
 	result := &PressureTestResult{}
 	return &SubTask{
 		start: func() {
+			isRun = true
+			isStop = false
+			log.Printf("TaskService[%s][%d]->start\n", task.tag, index)
+			for isRun {
+				url := task.setting.random_url()
+				task.request(&url, client)
+				log.Printf("TaskService[%s][%d]->%s->%s\n", task.tag, index, url.method(), url.url())
+			}
+			log.Printf("TaskService[%s][%d]->stop\n", task.tag, index)
+			isStop = true
+			task.notify_statistics()
 		},
 		stop:   func() { isRun = false },
 		isRun:  func() bool { return isRun },

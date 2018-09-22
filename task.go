@@ -94,8 +94,7 @@ func NewSubTask(index int, service *TaskService) *SubTask {
 	return &SubTask{
 		start: func() {
 		},
-		stop: func() {
-		},
+		stop:   func() { isRun = false },
 		isRun:  func() bool { return isRun },
 		isStop: func() bool { return isStop },
 		result: func() *PressureTestResult { return result },

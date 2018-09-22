@@ -10,7 +10,7 @@ import (
 type TaskService struct {
 	tag     string
 	mutex   sync.Mutex
-	person  []SubTask
+	persons []*SubTask
 	setting *TaskSetting
 }
 
@@ -20,13 +20,13 @@ func (t *TaskService) start() {
 	setting := t.setting
 	// init start server
 	for ; i < setting.Init_person; i++ {
-		go t.person[i].start()
+		go t.persons[i].start()
 	}
 	for i < setting.Final_person {
 		time.Sleep(time.Duration(setting.Duration_time) * time.Second)
 		for j := 0; j < setting.Add_person; j++ {
 			log.Println(i)
-			go t.person[i].start()
+			go t.persons[i].start()
 			i++
 		}
 	}
@@ -35,7 +35,7 @@ func (t *TaskService) start() {
 
 // stop server
 func (t *TaskService) stop() {
-	for _, p := range t.person {
+	for _, p := range t.persons {
 		p.stop()
 	}
 }
@@ -43,7 +43,7 @@ func (t *TaskService) stop() {
 // real statistics
 func (t *TaskService) real_statistics() {
 	result := &PressureTestResult{}
-	for _, p := range t.person {
+	for _, p := range t.persons {
 		result.add(p.result());
 	}
 }
@@ -52,7 +52,7 @@ func (t *TaskService) real_statistics() {
 func (t *TaskService) notify_statistics() {
 	t.mutex.Lock()
 	defer t.mutex.Unlock()
-	for _, p := range t.person {
+	for _, p := range t.persons {
 		if !p.isStop() {
 			return
 		}
@@ -77,7 +77,11 @@ func (t *TaskService) request(url *Url, client *http.Client) bool {
 }
 
 func NewTaskService(tag string, setting *TaskSetting) *TaskService {
-	return &TaskService{tag, sync.Mutex{}, make([]SubTask, setting.Final_person), setting}
+	service := &TaskService{tag, sync.Mutex{}, make([]*SubTask, setting.Final_person), setting}
+	for i := 0; i < setting.Final_person; i++ {
+		service.persons[i] = NewSubTask(i, service)
+	}
+	return service
 }
 
 type SubTask struct {

@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 	"net/http"
-)
+	)
 
 type TaskService struct {
 	tag     string
@@ -30,6 +30,7 @@ func (t *TaskService) start() {
 			i++
 		}
 	}
+	time.Sleep(time.Duration(setting.Duration_time) * time.Second)
 	t.stop()
 }
 

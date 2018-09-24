@@ -24,8 +24,7 @@ func (t *TaskService) start() {
 	}
 	for i < setting.Final_person {
 		time.Sleep(time.Duration(setting.Duration_time) * time.Second)
-		for j := 0; j < setting.Add_person; j++ {
-			log.Println(i)
+		for j := 0; j < setting.Add_person && i < setting.Final_person; j++ {
 			go t.persons[i].start()
 			i++
 		}

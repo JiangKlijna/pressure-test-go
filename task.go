@@ -103,7 +103,9 @@ func NewSubTask(index int, task *TaskService) *SubTask {
 			log.Printf("TaskService[%s][%d]->start\n", task.tag, index)
 			for isRun {
 				url := task.setting.random_url()
-				task.request(&url, client)
+				start := time.Now()
+				isFailure := task.request(&url, client)
+				result.mark(isFailure, start)
 				log.Printf("TaskService[%s][%d]->%s->%s\n", task.tag, index, url.method(), url.url())
 			}
 			log.Printf("TaskService[%s][%d]->stop\n", task.tag, index)

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"math/rand"
 	"strings"
+	"errors"
 )
 
 const defaultJson = `{
@@ -77,6 +78,15 @@ func (t TaskSetting) random_url() Url {
 
 // Determine if setting.json is valid
 func (t TaskSetting) is_valid() error {
+	if t.Init_person > t.Final_person {
+		return errors.New("Init_person <= Final_person")
+	}
+	if t.Add_person > t.Final_person {
+		return errors.New("Add_person <= Final_person")
+	}
+	if t.Duration_time < 1 {
+		return errors.New("Duration_time > 0")
+	}
 	return nil
 }
 

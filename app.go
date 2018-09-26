@@ -19,6 +19,10 @@ func (app *Application) Init() error {
 	app.settings = ss
 	app.services = make(map[string]TaskService)
 	for k, s := range ss {
+		err = s.is_valid()
+		if err != nil {
+			return err
+		}
 		app.services[k] = *NewTaskService(k, &s)
 	}
 	return nil

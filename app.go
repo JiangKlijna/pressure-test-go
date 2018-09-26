@@ -48,6 +48,9 @@ func (app *Application) Start() {
 
 // Stop all of server
 func (app *Application) Stop() {
+	for _, s := range app.services {
+		s.stop()
+	}
 }
 
 func main() {

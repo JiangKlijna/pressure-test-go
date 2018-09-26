@@ -75,6 +75,11 @@ func (t TaskSetting) random_url() Url {
 	return t.Urls[rand.Intn(len(t.Urls))]
 }
 
+// Determine if setting.json is valid
+func (t TaskSetting) is_valid() error {
+	return nil
+}
+
 // get method
 func (u Url) method() string {
 	if method, is := u["method"]; is {

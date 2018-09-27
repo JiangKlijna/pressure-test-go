@@ -87,6 +87,14 @@ func (t TaskSetting) is_valid() error {
 	if t.Duration_time < 1 {
 		return errors.New("Duration_time > 0")
 	}
+	switch t.Output_format {
+	case "csv":
+	case "html":
+	case "json":
+		break
+	default:
+		return errors.New("Output_format in [csv, html, json]")
+	}
 	return nil
 }
 

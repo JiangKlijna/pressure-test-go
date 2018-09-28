@@ -3,34 +3,34 @@ package main
 import "time"
 
 type PressureTestResult struct {
-	id             int
-	request_number int
-	failure_number int
-	duration_time  time.Duration
+	Id            int
+	RequestNumber int
+	FailureNumber int
+	DurationTime  time.Duration
 }
 
 // get Success rate
 func (r *PressureTestResult) success_rate() float32 {
-	return float32(r.request_number-r.failure_number) / float32(r.request_number) * 100
+	return float32(r.RequestNumber-r.FailureNumber) / float32(r.RequestNumber) * 100
 }
 
 // get Average time consuming
 func (r *PressureTestResult) average_time() time.Duration {
-	return r.duration_time / time.Duration(r.request_number)
+	return r.DurationTime / time.Duration(r.RequestNumber)
 }
 
 // add data
 func (r *PressureTestResult) add(other *PressureTestResult) {
-	r.request_number += other.request_number
-	r.failure_number += other.failure_number
-	r.duration_time += other.duration_time
+	r.RequestNumber += other.RequestNumber
+	r.FailureNumber += other.FailureNumber
+	r.DurationTime += other.DurationTime
 }
 
 // mark PressureTestResult
 func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
-	r.request_number++
+	r.RequestNumber++
 	if isFailure {
-		r.failure_number++
+		r.FailureNumber++
 	}
-	r.duration_time += time.Since(start)
+	r.DurationTime += time.Since(start)
 }

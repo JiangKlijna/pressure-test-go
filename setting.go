@@ -91,9 +91,10 @@ func (t TaskSetting) is_valid() error {
 	case "csv":
 	case "html":
 	case "json":
+	case "xml":
 		break
 	default:
-		return errors.New("Output_format in [csv, html, json]")
+		return errors.New("Output_format in [csv, html, json, xml]")
 	}
 	return nil
 }

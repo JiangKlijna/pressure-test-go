@@ -1,6 +1,9 @@
 package main
 
-import "time"
+import (
+	"time"
+	"os"
+)
 
 type PressureTestResult struct {
 	Id            int
@@ -33,4 +36,8 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 		r.FailureNumber++
 	}
 	r.DurationTime += time.Since(start)
+}
+
+type Formater interface {
+	out([]*PressureTestResult, os.File)
 }

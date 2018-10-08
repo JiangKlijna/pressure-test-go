@@ -54,3 +54,18 @@ type HtmlFormater struct {
 type JsonFormater struct {
 }
 
+func (f XmlFormater) out([]*PressureTestResult, os.File) {
+
+}
+
+func (f CsvFormater) out([]*PressureTestResult, os.File) {
+
+}
+
+func (f HtmlFormater) out([]*PressureTestResult, os.File) {
+
+}
+
+func (f JsonFormater) out([]*PressureTestResult, os.File) {
+
+}

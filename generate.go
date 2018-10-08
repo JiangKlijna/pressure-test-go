@@ -41,3 +41,16 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 type Formater interface {
 	out([]*PressureTestResult, os.File)
 }
+
+type XmlFormater struct {
+}
+
+type CsvFormater struct {
+}
+
+type HtmlFormater struct {
+}
+
+type JsonFormater struct {
+}
+

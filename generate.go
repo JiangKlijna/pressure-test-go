@@ -1,8 +1,9 @@
 package main
 
 import (
-	"time"
+	"encoding/xml"
 	"os"
+	"time"
 )
 
 type PressureTestResult struct {
@@ -41,7 +42,9 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 type Formater func([]*PressureTestResult, os.File)
 
 func XmlFormater(res []*PressureTestResult, f os.File) {
-
+	defer f.Close()
+	data, _ := xml.Marshal(res)
+	f.Write(data)
 }
 
 func CsvFormater(res []*PressureTestResult, f os.File) {

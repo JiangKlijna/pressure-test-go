@@ -61,3 +61,11 @@ func JsonFormater(res []*PressureTestResult, f os.File) {
 	data, _ := json.Marshal(res)
 	f.Write(data)
 }
+
+func csvMarshall(res []*PressureTestResult) ([]byte, error) {
+	return nil, nil
+}
+
+func htmlMarshall(res []*PressureTestResult) ([]byte, error) {
+	return nil, nil
+}

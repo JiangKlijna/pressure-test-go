@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"os"
 	"time"
@@ -56,5 +57,7 @@ func HtmlFormater(res []*PressureTestResult, f os.File) {
 }
 
 func JsonFormater(res []*PressureTestResult, f os.File) {
-
+	defer f.Close()
+	data, _ := json.Marshal(res)
+	f.Write(data)
 }

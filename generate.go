@@ -38,34 +38,20 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 	r.DurationTime += time.Since(start)
 }
 
-type Formater interface {
-	out([]*PressureTestResult, os.File)
-}
+type Formater func([]*PressureTestResult, os.File)
 
-type XmlFormater struct {
-}
-
-type CsvFormater struct {
-}
-
-type HtmlFormater struct {
-}
-
-type JsonFormater struct {
-}
-
-func (f XmlFormater) out([]*PressureTestResult, os.File) {
+func XmlFormater(res []*PressureTestResult, f os.File) {
 
 }
 
-func (f CsvFormater) out([]*PressureTestResult, os.File) {
+func CsvFormater(res []*PressureTestResult, f os.File) {
 
 }
 
-func (f HtmlFormater) out([]*PressureTestResult, os.File) {
+func HtmlFormater(res []*PressureTestResult, f os.File) {
 
 }
 
-func (f JsonFormater) out([]*PressureTestResult, os.File) {
+func JsonFormater(res []*PressureTestResult, f os.File) {
 
 }

@@ -49,11 +49,15 @@ func XmlFormater(res []*PressureTestResult, f os.File) {
 }
 
 func CsvFormater(res []*PressureTestResult, f os.File) {
-
+	defer f.Close()
+	data, _ := csvMarshal(res)
+	f.Write(data)
 }
 
 func HtmlFormater(res []*PressureTestResult, f os.File) {
-
+	defer f.Close()
+	data, _ := htmlMarshal(res)
+	f.Write(data)
 }
 
 func JsonFormater(res []*PressureTestResult, f os.File) {
@@ -62,10 +66,10 @@ func JsonFormater(res []*PressureTestResult, f os.File) {
 	f.Write(data)
 }
 
-func csvMarshall(res []*PressureTestResult) ([]byte, error) {
+func csvMarshal(res []*PressureTestResult) ([]byte, error) {
 	return nil, nil
 }
 
-func htmlMarshall(res []*PressureTestResult) ([]byte, error) {
+func htmlMarshal(res []*PressureTestResult) ([]byte, error) {
 	return nil, nil
 }

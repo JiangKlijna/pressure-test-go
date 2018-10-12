@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"os"
 	"time"
 )
@@ -67,7 +69,12 @@ func JsonFormater(res []*PressureTestResult, f os.File) {
 }
 
 func csvMarshal(res []*PressureTestResult) ([]byte, error) {
-	return nil, nil
+	buf := bytes.Buffer{}
+	buf.WriteString("Id,RequestNumber,FailureNumber,DurationTime\n")
+	for _, r := range res  {
+		buf.WriteString(fmt.Sprintf("%d,%d,%d,%s\n", r.Id, r.RequestNumber, r.FailureNumber, r.DurationTime))
+	}
+	return buf.Bytes(), nil
 }
 
 func htmlMarshal(res []*PressureTestResult) ([]byte, error) {

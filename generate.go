@@ -78,5 +78,11 @@ func csvMarshal(res []*PressureTestResult) ([]byte, error) {
 }
 
 func htmlMarshal(res []*PressureTestResult) ([]byte, error) {
-	return nil, nil
+	buf := bytes.Buffer{}
+	buf.WriteString("<html><head><title>压力测试结果报告</title><meta chararset=\"utf-8\" /><style>*{margin:0;padding:0;font-family:consolas}tr:nth-of-type(odd){background:#e8edff}tr:nth-of-type(even){background:white}tr:nth-of-type(odd):hover{background:white}tr:nth-of-type(even):hover{background:#e8edff}table{width:100%;text-align:center;color:#669}tr:first-of-type,tr:last-of-type{font-size:18px;font-weight:900}tr:hover{cursor:pointer}td{padding:8px}</style></head><body><table><tr><td>任务</td><td>请求总数</td><td>失败总数</td><td>成功率</td><td>平均耗时(s)</td></tr>")
+	for _, r := range res  {
+		buf.WriteString(fmt.Sprintf("<tr><td>%d</td><td>%d</td><td>%d</td><td>%s</td></tr>", r.Id, r.RequestNumber, r.FailureNumber, r.DurationTime))
+	}
+	buf.WriteString("</table></body></html>")
+	return buf.Bytes(), nil
 }

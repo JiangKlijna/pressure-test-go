@@ -42,7 +42,7 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 	r.DurationTime += time.Since(start)
 }
 
-type Formater func([]*PressureTestResult, os.File)
+type Formater func([]*PressureTestResult, *os.File)
 
 func getFormater(formater string) Formater {
 	switch formater {
@@ -59,31 +59,31 @@ func getFormater(formater string) Formater {
 	}
 }
 
-func XmlFormater(res []*PressureTestResult, f os.File) {
+func XmlFormater(res []*PressureTestResult, f *os.File) {
 	defer f.Close()
 	data, _ := xml.Marshal(res)
 	f.Write(data)
 }
 
-func CsvFormater(res []*PressureTestResult, f os.File) {
+func CsvFormater(res []*PressureTestResult, f *os.File) {
 	defer f.Close()
 	data, _ := csvMarshal(res)
 	f.Write(data)
 }
 
-func HtmlFormater(res []*PressureTestResult, f os.File) {
+func HtmlFormater(res []*PressureTestResult, f *os.File) {
 	defer f.Close()
 	data, _ := htmlMarshal(res)
 	f.Write(data)
 }
 
-func JsonFormater(res []*PressureTestResult, f os.File) {
+func JsonFormater(res []*PressureTestResult, f *os.File) {
 	defer f.Close()
 	data, _ := json.Marshal(res)
 	f.Write(data)
 }
 
-func GolangFormater(res []*PressureTestResult, f os.File) {
+func GolangFormater(res []*PressureTestResult, f *os.File) {
 	defer f.Close()
 	data := []byte(fmt.Sprintf("%s", res))
 	f.Write(data)

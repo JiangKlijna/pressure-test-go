@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
-	"os"
+	"io/ioutil"
 	"time"
 )
 
@@ -42,7 +42,7 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 	r.DurationTime += time.Since(start)
 }
 
-type Formater func([]*PressureTestResult, *os.File)
+type Formater func([]*PressureTestResult, string)
 
 func getFormater(formater string) Formater {
 	switch formater {
@@ -59,34 +59,29 @@ func getFormater(formater string) Formater {
 	}
 }
 
-func XmlFormater(res []*PressureTestResult, f *os.File) {
-	defer f.Close()
+func XmlFormater(res []*PressureTestResult, filename string) {
 	data, _ := xml.Marshal(res)
-	f.Write(data)
+	ioutil.WriteFile(filename, data, 0666)
 }
 
-func CsvFormater(res []*PressureTestResult, f *os.File) {
-	defer f.Close()
+func CsvFormater(res []*PressureTestResult, filename string) {
 	data, _ := csvMarshal(res)
-	f.Write(data)
+	ioutil.WriteFile(filename, data, 0666)
 }
 
-func HtmlFormater(res []*PressureTestResult, f *os.File) {
-	defer f.Close()
+func HtmlFormater(res []*PressureTestResult, filename string) {
 	data, _ := htmlMarshal(res)
-	f.Write(data)
+	ioutil.WriteFile(filename, data, 0666)
 }
 
-func JsonFormater(res []*PressureTestResult, f *os.File) {
-	defer f.Close()
+func JsonFormater(res []*PressureTestResult, filename string) {
 	data, _ := json.Marshal(res)
-	f.Write(data)
+	ioutil.WriteFile(filename, data, 0666)
 }
 
-func GolangFormater(res []*PressureTestResult, f *os.File) {
-	defer f.Close()
-	data := []byte(fmt.Sprintf("%s", res))
-	f.Write(data)
+func GolangFormater(res []*PressureTestResult, filename string) {
+	data := []byte(fmt.Sprint(res))
+	ioutil.WriteFile(filename, data, 0666)
 }
 
 func csvMarshal(res []*PressureTestResult) ([]byte, error) {

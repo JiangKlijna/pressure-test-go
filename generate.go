@@ -42,6 +42,10 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 	r.DurationTime += time.Since(start)
 }
 
+func OutputResult(res []*PressureTestResult, f string) {
+	getFormater(f)(res, fmt.Sprint(time.Now(), f))
+}
+
 type Formater func([]*PressureTestResult, string)
 
 func getFormater(formater string) Formater {

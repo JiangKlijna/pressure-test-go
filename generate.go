@@ -44,6 +44,21 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 
 type Formater func([]*PressureTestResult, os.File)
 
+func getFormater(formater string) Formater {
+	switch formater {
+	case "csv":
+		return CsvFormater
+	case "xml":
+		return XmlFormater
+	case "html":
+		return HtmlFormater
+	case "json":
+		return JsonFormater
+	default:
+		return GolangFormater
+	}
+}
+
 func XmlFormater(res []*PressureTestResult, f os.File) {
 	defer f.Close()
 	data, _ := xml.Marshal(res)

@@ -4,6 +4,7 @@ import (
 	"os"
 	"bytes"
 	"fmt"
+	"time"
 )
 
 // File if exist
@@ -41,4 +42,9 @@ func params_string(params map[string]interface{}) string {
 	}
 	buf.Truncate(buf.Len() - 1)
 	return buf.String()
+}
+
+// get filename
+func getFilename(suffix string) string {
+	return fmt.Sprintf("%d.%s", time.Now().Unix(), suffix)
 }

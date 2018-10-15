@@ -49,7 +49,7 @@ func (t *TaskService) real_statistics() {
 		res = append(res, p.result())
 	}
 	res = append(res, result)
-
+	OutputResult(res, t.setting.Output_format)
 }
 
 // notify statistics

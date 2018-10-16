@@ -44,11 +44,11 @@ func (t *TaskService) stop() {
 func (t *TaskService) real_statistics() {
 	res := make([]*PressureTestResult, len(t.persons) + 1)
 	result := &PressureTestResult{}
-	for _, p := range t.persons {
+	for i, p := range t.persons {
 		result.add(p.result());
-		res = append(res, p.result())
+		res[i] = p.result()
 	}
-	res = append(res, result)
+	res[len(t.persons)] = result
 	OutputResult(res, t.setting.Output_format)
 }
 

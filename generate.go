@@ -43,7 +43,7 @@ func (r *PressureTestResult) mark(isFailure bool, start time.Time) {
 }
 
 func OutputResult(res []*PressureTestResult, f string) {
-	getFormater(f)(res, fmt.Sprint(time.Now(), getFilename(f)))
+	getFormater(f)(res, getFilename(f))
 }
 
 type Formater func([]*PressureTestResult, string)

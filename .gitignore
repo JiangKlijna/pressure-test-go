@@ -28,3 +28,8 @@ target/
 setting.json
 # executable file
 pressure*
+# result file
+*.html
+*.xml
+*.json
+*.csv

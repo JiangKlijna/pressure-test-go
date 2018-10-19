@@ -90,9 +90,9 @@ func GolangFormater(res []*PressureTestResult, filename string) {
 
 func csvMarshal(res []*PressureTestResult) ([]byte, error) {
 	buf := bytes.Buffer{}
-	buf.WriteString("Id,RequestNumber,FailureNumber,DurationTime\n")
+	buf.WriteString("Id,RequestNumber,FailureNumber,SuccessRate,AverageTime\n")
 	for _, r := range res {
-		buf.WriteString(fmt.Sprintf("%d,%d,%d,%s\n", r.Id, r.RequestNumber, r.FailureNumber, r.DurationTime))
+		buf.WriteString(fmt.Sprintf("%d,%d,%d,%f,%s\n", r.Id, r.RequestNumber, r.FailureNumber, r.success_rate(), r.average_time()))
 	}
 	return buf.Bytes(), nil
 }

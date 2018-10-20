@@ -64,7 +64,7 @@ func (t *TaskService) notify_statistics() {
 	t.real_statistics()
 }
 
-// single request
+// single request and return isFailure
 func (t *TaskService) request(url *Url, client *http.Client) bool {
 	req, err := http.NewRequest(url.method(), url.url(), url.data())
 	if err != nil {
@@ -77,7 +77,7 @@ func (t *TaskService) request(url *Url, client *http.Client) bool {
 	if err != nil {
 		return false
 	}
-	return res.StatusCode >= 200 || res.StatusCode < 300
+	return res.StatusCode < 200 || res.StatusCode >= 300
 }
 
 func NewTaskService(tag string, setting *TaskSetting) *TaskService {

@@ -18,7 +18,7 @@ type PressureTestResult struct {
 
 // get Success rate
 func (r *PressureTestResult) success_rate() float32 {
-	return float32(r.RequestNumber-r.FailureNumber) / float32(r.RequestNumber) * 100
+	return (float32(r.RequestNumber-r.FailureNumber) / float32(r.RequestNumber)) * 100
 }
 
 // get Average time consuming

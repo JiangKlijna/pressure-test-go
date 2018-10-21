@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"encoding/xml"
 	"fmt"
 	"io/ioutil"
 	"time"
@@ -64,7 +63,7 @@ func getFormater(formater string) Formater {
 }
 
 func XmlFormater(res []*PressureTestResult, filename string) {
-	data, _ := xml.Marshal(res)
+	data, _ := xmlMarshal(res)
 	ioutil.WriteFile(filename, data, 0666)
 }
 
@@ -86,6 +85,11 @@ func JsonFormater(res []*PressureTestResult, filename string) {
 func GolangFormater(res []*PressureTestResult, filename string) {
 	data := []byte(fmt.Sprint(res))
 	ioutil.WriteFile(filename, data, 0666)
+}
+
+func xmlMarshal(res []*PressureTestResult) ([]byte, error) {
+	buf := bytes.Buffer{}
+	return buf.Bytes(), nil
 }
 
 func csvMarshal(res []*PressureTestResult) ([]byte, error) {

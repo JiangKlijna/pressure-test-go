@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"time"
@@ -78,7 +77,7 @@ func HtmlFormater(res []*PressureTestResult, filename string) {
 }
 
 func JsonFormater(res []*PressureTestResult, filename string) {
-	data, _ := json.Marshal(res)
+	data, _ := jsonMarshal(res)
 	ioutil.WriteFile(filename, data, 0666)
 }
 
@@ -108,5 +107,10 @@ func htmlMarshal(res []*PressureTestResult) ([]byte, error) {
 		buf.WriteString(fmt.Sprintf("<tr><td>%d</td><td>%d</td><td>%d</td><td>%f</td><td>%s</td></tr>", r.Id, r.RequestNumber, r.FailureNumber, r.success_rate(), r.average_time()))
 	}
 	buf.WriteString("</table></body></html>")
+	return buf.Bytes(), nil
+}
+
+func jsonMarshal(res []*PressureTestResult) ([]byte, error) {
+	buf := bytes.Buffer{}
 	return buf.Bytes(), nil
 }

@@ -99,7 +99,7 @@ type SubTask struct {
 func NewSubTask(index int, task *TaskService) *SubTask {
 	isRun, isStop := false, false
 	client := &http.Client{}
-	result := &PressureTestResult{}
+	result := &PressureTestResult{Id:index+1}
 	return &SubTask{
 		start: func() {
 			isRun = true

@@ -102,7 +102,7 @@ func csvMarshal(res []*PressureTestResult) ([]byte, error) {
 	buf := bytes.Buffer{}
 	buf.WriteString("Id,RequestNumber,FailureNumber,SuccessRate,AverageTime\n")
 	for _, r := range res {
-		buf.WriteString(fmt.Sprintf("%d,%d,%d,%f,%s\n", r.Id, r.RequestNumber, r.FailureNumber, r.success_rate(), r.average_time()))
+		buf.WriteString(fmt.Sprintf("%d,%d,%d,%.2f,%s\n", r.Id, r.RequestNumber, r.FailureNumber, r.success_rate(), r.average_time()))
 	}
 	return buf.Bytes(), nil
 }

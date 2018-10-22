@@ -88,6 +88,13 @@ func GolangFormater(res []*PressureTestResult, filename string) {
 
 func xmlMarshal(res []*PressureTestResult) ([]byte, error) {
 	buf := bytes.Buffer{}
+	buf.WriteString("<PressureTestResults>\n")
+	for _, r := range res {
+		buf.WriteString("\t<PressureTestResult>\n")
+		buf.WriteString(fmt.Sprintf("\t\t<Id>%d</Id><RequestNumber>%d</RequestNumber><FailureNumber>%d</FailureNumber><SuccessRate>%.2f</SuccessRate><AverageTime>%s</AverageTime>\n", r.Id, r.RequestNumber, r.FailureNumber, r.success_rate(), r.average_time()))
+		buf.WriteString("\t</PressureTestResult>\n")
+	}
+	buf.WriteString("</PressureTestResults>")
 	return buf.Bytes(), nil
 }
 

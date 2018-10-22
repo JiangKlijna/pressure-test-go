@@ -119,5 +119,13 @@ func htmlMarshal(res []*PressureTestResult) ([]byte, error) {
 
 func jsonMarshal(res []*PressureTestResult) ([]byte, error) {
 	buf := bytes.Buffer{}
+	buf.WriteString("[")
+	for i, r := range res {
+		buf.WriteString(fmt.Sprintf("{\"Id\":\"%d\",\"RequestNumber\":\"%d\",\"FailureNumber\":\"%d\",\"SuccessRate\":\"%.2f\",\"AverageTime\":\"%s\"}", r.Id, r.RequestNumber, r.FailureNumber, r.success_rate(), r.average_time()))
+		if i < len(res) -1 {
+			buf.WriteByte(',')
+		}
+	}
+	buf.WriteString("]")
 	return buf.Bytes(), nil
 }

@@ -12,6 +12,7 @@ type TaskService struct {
 	mutex   sync.Mutex
 	persons []*SubTask
 	setting *TaskSetting
+	app     *Application
 	isStop  bool
 }
 
@@ -82,8 +83,8 @@ func (t *TaskService) request(url *Url, client *http.Client) bool {
 	return res.StatusCode < 200 || res.StatusCode >= 300
 }
 
-func NewTaskService(tag string, setting *TaskSetting) *TaskService {
-	service := &TaskService{tag, sync.Mutex{}, make([]*SubTask, setting.Final_person), setting, false}
+func NewTaskService(tag string, setting *TaskSetting, app *Application) *TaskService {
+	service := &TaskService{tag, sync.Mutex{}, make([]*SubTask, setting.Final_person), setting, app, false}
 	for i := 0; i < setting.Final_person; i++ {
 		service.persons[i] = NewSubTask(i, service)
 	}

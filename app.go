@@ -23,7 +23,7 @@ func (app *Application) Init() error {
 		if err != nil {
 			return err
 		}
-		app.services[k] = *NewTaskService(k, &s)
+		app.services[k] = *NewTaskService(k, &s, app)
 	}
 	return nil
 }
@@ -59,7 +59,7 @@ func (app *Application) Stop() {
 }
 
 // shutdown app
-func (app *Application) Shutdown(){
+func (app *Application) Shutdown() {
 	os.Exit(0)
 }
 

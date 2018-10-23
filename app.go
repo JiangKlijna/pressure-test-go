@@ -36,14 +36,18 @@ func (app *Application) check(err error) {
 	}
 }
 
+func (app *Application) Wait() {
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, os.Kill)
+	<-c
+}
+
 // Start all of server
 func (app *Application) Start() {
 	for _, s := range app.services {
 		s.start()
 	}
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, os.Kill)
-	<-c
+	app.Wait()
 }
 
 // Stop all of server
@@ -51,6 +55,7 @@ func (app *Application) Stop() {
 	for _, s := range app.services {
 		s.stop()
 	}
+	app.Wait()
 }
 
 func main() {

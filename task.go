@@ -65,6 +65,17 @@ func (t *TaskService) notify_statistics() {
 	}
 	t.real_statistics()
 	t.isStop = true
+	t.notify_shutdown()
+}
+
+// notify shutdown
+func (t *TaskService) notify_shutdown() {
+	for _, s := range t.app.services {
+		if !s.isStop {
+			return
+		}
+	}
+	t.app.Shutdown()
 }
 
 // single request and return isFailure

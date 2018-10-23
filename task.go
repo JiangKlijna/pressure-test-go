@@ -2,16 +2,17 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"sync"
 	"time"
-	"net/http"
-	)
+)
 
 type TaskService struct {
 	tag     string
 	mutex   sync.Mutex
 	persons []*SubTask
 	setting *TaskSetting
+	isStop  bool
 }
 
 // start server
@@ -42,7 +43,7 @@ func (t *TaskService) stop() {
 
 // real statistics
 func (t *TaskService) real_statistics() {
-	res := make([]*PressureTestResult, len(t.persons) + 1)
+	res := make([]*PressureTestResult, len(t.persons)+1)
 	result := &PressureTestResult{}
 	for i, p := range t.persons {
 		result.add(p.result());
@@ -62,6 +63,7 @@ func (t *TaskService) notify_statistics() {
 		}
 	}
 	t.real_statistics()
+	t.isStop = true
 }
 
 // single request and return isFailure
@@ -81,7 +83,7 @@ func (t *TaskService) request(url *Url, client *http.Client) bool {
 }
 
 func NewTaskService(tag string, setting *TaskSetting) *TaskService {
-	service := &TaskService{tag, sync.Mutex{}, make([]*SubTask, setting.Final_person), setting}
+	service := &TaskService{tag, sync.Mutex{}, make([]*SubTask, setting.Final_person), setting, false}
 	for i := 0; i < setting.Final_person; i++ {
 		service.persons[i] = NewSubTask(i, service)
 	}
@@ -99,7 +101,7 @@ type SubTask struct {
 func NewSubTask(index int, task *TaskService) *SubTask {
 	isRun, isStop := false, false
 	client := &http.Client{}
-	result := &PressureTestResult{Id:index+1}
+	result := &PressureTestResult{Id: index + 1}
 	return &SubTask{
 		start: func() {
 			isRun = true

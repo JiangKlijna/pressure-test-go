@@ -58,10 +58,16 @@ func (app *Application) Stop() {
 	app.Wait()
 }
 
+// shutdown app
+func (app *Application) Shutdown(){
+	os.Exit(0)
+}
+
 func main() {
 	app := &Application{}
 	err := app.Init()
 	app.check(err)
 	app.Start()
 	app.Stop()
+	app.Shutdown()
 }

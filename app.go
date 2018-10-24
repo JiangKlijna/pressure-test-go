@@ -6,24 +6,24 @@ import (
 )
 
 type Application struct {
-	services map[string]TaskService
-	settings map[string]TaskSetting
+	services map[string]*TaskService
+	settings map[string]*TaskSetting
 }
 
 // Init log & set
 func (app *Application) Init() error {
 	ss, err := NewTaskSetting("setting.json")
 	if err != nil {
-		return err;
+		return err
 	}
 	app.settings = ss
-	app.services = make(map[string]TaskService)
+	app.services = make(map[string]*TaskService)
 	for k, s := range ss {
 		err = s.is_valid()
 		if err != nil {
 			return err
 		}
-		app.services[k] = *NewTaskService(k, &s, app)
+		app.services[k] = NewTaskService(k, s, app)
 	}
 	return nil
 }

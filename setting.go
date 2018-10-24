@@ -51,7 +51,7 @@ type TaskSetting struct {
 }
 
 // New creates a new Setting
-func NewTaskSetting(filename string) (map[string]TaskSetting, error) {
+func NewTaskSetting(filename string) (map[string]*TaskSetting, error) {
 	var bytes []byte
 	var err error
 	if !FileExists(filename) {
@@ -63,7 +63,7 @@ func NewTaskSetting(filename string) (map[string]TaskSetting, error) {
 			return nil, err
 		}
 	}
-	data := make(map[string]TaskSetting)
+	data := make(map[string]*TaskSetting)
 	err = json.Unmarshal(bytes, &data)
 	if err != nil {
 		return nil, err
